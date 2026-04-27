@@ -8,8 +8,26 @@ st.set_page_config(
     layout="wide"
 )
 
+# Custom CSS for smaller font
+st.markdown("""
+<style>
+h1 {
+    font-size: 2.3rem !important;
+}
+p, label, div, span {
+    font-size: 0.95rem !important;
+}
+[data-testid="stMetricValue"] {
+    font-size: 2.1rem !important;
+}
+[data-testid="stMetricLabel"] {
+    font-size: 1rem !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 st.title("📱 Tempered Compatible Finder")
-st.caption("Model search karo aur compatible tempered glass location dekho.")
+st.caption("Search a model and find the compatible tempered glass location.")
 
 SHEET_URL = st.secrets.get("SHEET_URL", "")
 
@@ -32,7 +50,7 @@ def excel_export_url(sheet_url):
 def load_data(sheet_url):
     url = excel_export_url(sheet_url)
 
-    # Direct workbook read
+    # Read Google Sheet as Excel
     compatible_raw = pd.read_excel(
         url,
         sheet_name="compatible modal",
@@ -52,7 +70,6 @@ def load_data(sheet_url):
     compatible_raw = compatible_raw.fillna("")
     models_raw = models_raw.fillna("")
 
-    # Aapke screenshot ke hisaab se:
     # compatible modal sheet:
     # B column = location
     # C column = compatible model list
@@ -95,13 +112,13 @@ def load_data(sheet_url):
 
 
 if not SHEET_URL:
-    st.error("SHEET_URL missing hai. Streamlit secrets me Google Sheet link add karo.")
+    st.error("SHEET_URL is missing. Please add your Google Sheet link in Streamlit secrets.")
     st.stop()
 
 try:
     df, model_list = load_data(SHEET_URL)
 except Exception as e:
-    st.error("Google Sheet data load nahi ho raha.")
+    st.error("Unable to load Google Sheet data.")
     st.caption(str(e))
     st.stop()
 
@@ -110,14 +127,14 @@ col1, col2 = st.columns([2, 1])
 
 with col1:
     selected_model = st.selectbox(
-        "Model select/search karo",
+        "Select or search a model",
         options=[""] + model_list,
         index=0
     )
 
 with col2:
     manual_search = st.text_input(
-        "Ya manually type karo",
+        "Or type manually",
         placeholder="Example: Redmi Note 7 Tempered"
     )
 
@@ -129,7 +146,7 @@ if search_model:
     ]
 
     if result.empty:
-        st.warning("Koi compatible result nahi mila.")
+        st.warning("No compatible result found.")
     else:
         locations = sorted(result["location"].astype(str).str.strip().unique())
 
@@ -142,16 +159,14 @@ if search_model:
 
         st.success("Result found")
 
-        kpi1, kpi2, kpi3 = st.columns(3)
-        kpi1.metric("Search Model", search_model)
-        kpi2.metric("Location", " & ".join(locations))
-        kpi3.metric("Compatible Count", len(all_compatible))
+        # Smaller and cleaner summary
+        st.markdown(f"**Selected Model:** {search_model}")
 
-        st.subheader("📍 Location")
-        st.info(" & ".join(locations))
+        kpi1, kpi2 = st.columns(2)
+        kpi1.metric("Location", " & ".join(locations))
+        kpi2.metric("Compatible Count", len(all_compatible))
 
         st.subheader("✅ Compatible Model List")
-
         for model in all_compatible:
             st.write(f"- {model}")
 
@@ -159,9 +174,4 @@ if search_model:
             st.dataframe(result, use_container_width=True)
 
 else:
-    st.info("Dropdown se model select karo ya manually search karo.")
-
-st.divider()
-
-with st.expander("Full Backend Data"):
-    st.dataframe(df, use_container_width=True)
+    st.info("Select a model from the dropdown or type it manually.")
