@@ -39,30 +39,47 @@ def load_data(sheet_url):
     compatible_raw = pd.read_csv(compatible_url, header=None)
     models_raw = pd.read_csv(all_models_url, header=None)
 
+    # Empty rows/columns remove
+    compatible_raw = compatible_raw.dropna(how="all").dropna(axis=1, how="all")
+    models_raw = models_raw.dropna(how="all").dropna(axis=1, how="all")
+
     # compatible modal sheet:
-    # Column B = location
-    # Column C = compatible model list
-    compatible_df = compatible_raw.iloc[:, [1, 2]].copy()
+    # Blank A column remove ho sakta hai, isliye first 2 non-empty columns use kar rahe hain:
+    # 1st useful column = Location
+    # 2nd useful column = Compatible models
+    compatible_df = compatible_raw.iloc[:, [0, 1]].copy()
     compatible_df.columns = ["location", "compatible"]
 
-    compatible_df = compatible_df.dropna(subset=["location", "compatible"])
+    compatible_df["location"] = compatible_df["location"].astype(str).str.strip()
+    compatible_df["compatible"] = compatible_df["compatible"].astype(str).str.strip()
+
     compatible_df = compatible_df[
-        ~compatible_df["location"].astype(str).str.lower().str.contains("s.no|location", na=False)
+        ~compatible_df["location"].str.lower().str.contains("s.no|location|nan", na=False)
     ]
+
     compatible_df = compatible_df[
-        ~compatible_df["compatible"].astype(str).str.lower().str.contains("compatible model names", na=False)
+        ~compatible_df["compatible"].str.lower().str.contains("compatible model names|nan", na=False)
+    ]
+
+    compatible_df = compatible_df[
+        (compatible_df["location"] != "") &
+        (compatible_df["compatible"] != "")
     ]
 
     # All Modals sheet:
-    # Column C = model names
-    models_df = models_raw.iloc[:, [2]].copy()
+    # Blank columns remove ho sakte hain, isliye last non-empty column use kar rahe hain
+    models_df = models_raw.iloc[:, [-1]].copy()
     models_df.columns = ["model"]
-    models_df = models_df.dropna(subset=["model"])
+
+    models_df["model"] = models_df["model"].astype(str).str.strip()
+
     models_df = models_df[
-        ~models_df["model"].astype(str).str.lower().str.contains("all modals", na=False)
+        ~models_df["model"].str.lower().str.contains("all modals|nan", na=False)
     ]
 
-    model_list = sorted(models_df["model"].astype(str).str.strip().unique())
+    models_df = models_df[models_df["model"] != ""]
+
+    model_list = sorted(models_df["model"].unique())
 
     return compatible_df, model_list
 
