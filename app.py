@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import re
+from urllib.parse import quote
 
 st.set_page_config(
     page_title="TC Dash",
@@ -25,7 +26,9 @@ def sheet_csv_url(sheet_url, sheet_name):
     sheet_id = get_sheet_id(sheet_url)
     if not sheet_id:
         return sheet_url
-    return f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+
+    safe_sheet_name = quote(sheet_name)
+    return f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={safe_sheet_name}"
 
 
 @st.cache_data(ttl=60)
