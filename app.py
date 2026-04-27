@@ -4,7 +4,7 @@ import re
 
 st.set_page_config(
     page_title="TC Dash",
-    page_icon="📱",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -17,7 +17,7 @@ st.markdown("""
 }
 
 html, body, [data-testid="stAppViewContainer"], .stApp {
-    background: linear-gradient(135deg, #fff7f7 0%, #ffffff 45%, #f7f8fb 100%) !important;
+    background: linear-gradient(135deg, #fcf7f7 0%, #ffffff 48%, #f7f8fb 100%) !important;
     color: #111827 !important;
     color-scheme: light !important;
 }
@@ -27,9 +27,9 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
 }
 
 .block-container {
-    padding-top: 2rem;
+    padding-top: 1.8rem;
     padding-bottom: 2rem;
-    max-width: 1100px;
+    max-width: 1080px;
 }
 
 /* Hide Streamlit default menu/footer/header as much as possible */
@@ -46,64 +46,84 @@ header {
     display: none !important;
 }
 
-/* Main readable text */
+/* Base readable text */
 html, body, .stApp,
 p, li, span, div, label {
     color: #111827 !important;
 }
 
-/* Hero card */
+/* Hero section */
 .app-card {
-    background: #ffffff !important;
+    background: linear-gradient(180deg, #ffffff 0%, #fffdfd 100%) !important;
     border: 1px solid #f0dede;
-    border-radius: 24px;
+    border-radius: 26px;
     padding: 30px 32px;
-    box-shadow: 0 18px 45px rgba(25, 25, 25, 0.08);
-    margin-bottom: 24px;
+    box-shadow: 0 18px 45px rgba(25, 25, 25, 0.06);
+    margin-bottom: 26px;
+    position: relative;
+    overflow: hidden;
 }
 
-.badge {
+.app-card:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #ff4b4b 0%, #ff7a7a 100%);
+}
+
+.utility-tag {
     display: inline-block;
-    background: #ff3b45 !important;
-    color: #ffffff !important;
-    padding: 7px 14px;
+    background: #fff4f4 !important;
+    color: #d92d37 !important;
+    border: 1px solid #ffd8d8;
+    padding: 8px 14px;
     border-radius: 999px;
-    font-size: 0.85rem;
-    font-weight: 800;
-    margin-bottom: 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
     letter-spacing: 0.03em;
+    margin-bottom: 18px;
 }
 
 .app-title {
     font-size: 3rem;
-    font-weight: 850;
-    color: #20212b !important;
-    margin-bottom: 8px;
+    font-weight: 700;
+    color: #1f2937 !important;
+    margin-bottom: 10px;
     letter-spacing: -0.04em;
-    line-height: 1.1;
+    line-height: 1.08;
+}
+
+.app-title span {
+    color: #d92d37 !important;
+    font-weight: 700;
 }
 
 .app-subtitle {
-    font-size: 1.2rem;
-    color: #374151 !important;
-    line-height: 1.6;
+    font-size: 1.12rem;
+    color: #4b5563 !important;
+    line-height: 1.65;
     margin-bottom: 0;
-    font-weight: 550;
+    font-weight: 400;
+    max-width: 760px;
 }
 
 /* Input labels */
 div[data-testid="stSelectbox"] label,
 div[data-testid="stTextInput"] label {
-    font-size: 1.05rem !important;
-    font-weight: 750 !important;
-    color: #111827 !important;
+    font-size: 1.02rem !important;
+    font-weight: 500 !important;
+    color: #1f2937 !important;
 }
 
-/* Input/dropdown text */
+/* Input wrapper text */
 div[data-testid="stSelectbox"] div,
 div[data-testid="stTextInput"] div {
-    font-size: 1.03rem !important;
+    font-size: 1.02rem !important;
     color: #111827 !important;
+    font-weight: 400 !important;
 }
 
 /* Input boxes */
@@ -111,31 +131,34 @@ div[data-baseweb="select"] > div,
 div[data-baseweb="input"] > div {
     border-radius: 16px !important;
     background-color: #ffffff !important;
-    border: 1.5px solid #d1d5db !important;
+    border: 1.5px solid #d6dbe4 !important;
     color: #111827 !important;
+    min-height: 54px !important;
+    box-shadow: none !important;
 }
 
 /* Dropdown selected value */
 div[data-baseweb="select"] span {
     color: #111827 !important;
-    font-weight: 700 !important;
+    font-weight: 400 !important;
     background-color: transparent !important;
+    -webkit-text-fill-color: #111827 !important;
 }
 
 /* Manual input text */
 div[data-baseweb="input"] input {
     color: #111827 !important;
     background-color: #ffffff !important;
-    font-weight: 700 !important;
+    font-weight: 400 !important;
     -webkit-text-fill-color: #111827 !important;
 }
 
-/* Placeholder darker */
+/* Placeholder */
 div[data-baseweb="input"] input::placeholder {
-    color: #4b5563 !important;
+    color: #667085 !important;
     opacity: 1 !important;
-    font-weight: 650 !important;
-    -webkit-text-fill-color: #4b5563 !important;
+    font-weight: 400 !important;
+    -webkit-text-fill-color: #667085 !important;
 }
 
 /* Force dropdown menu readable on all phones */
@@ -148,6 +171,7 @@ div[data-baseweb="popover"] * {
     background-color: #ffffff !important;
     color: #111827 !important;
     -webkit-text-fill-color: #111827 !important;
+    font-weight: 400 !important;
 }
 
 ul[role="listbox"] {
@@ -160,7 +184,7 @@ ul[role="listbox"] {
 li[role="option"] {
     background-color: #ffffff !important;
     color: #111827 !important;
-    font-weight: 700 !important;
+    font-weight: 400 !important;
     -webkit-text-fill-color: #111827 !important;
 }
 
@@ -169,32 +193,30 @@ li[role="option"] span {
     background-color: transparent !important;
     color: #111827 !important;
     -webkit-text-fill-color: #111827 !important;
+    font-weight: 400 !important;
 }
 
 li[role="option"]:hover {
-    background-color: #f3f4f6 !important;
+    background-color: #f8fafc !important;
     color: #111827 !important;
 }
 
 li[role="option"]:hover * {
-    background-color: #f3f4f6 !important;
+    background-color: #f8fafc !important;
     color: #111827 !important;
     -webkit-text-fill-color: #111827 !important;
 }
 
 li[aria-selected="true"],
 li[aria-selected="true"] * {
-    background-color: #fee2e2 !important;
+    background-color: #fff5f5 !important;
     color: #111827 !important;
     -webkit-text-fill-color: #111827 !important;
-    font-weight: 800 !important;
+    font-weight: 500 !important;
 }
 
-/* Prevent browser dark-mode color inversion */
-input,
-textarea,
-select,
-button {
+/* Prevent browser dark-mode inversion */
+input, textarea, select, button {
     color-scheme: light !important;
     background-color: #ffffff !important;
     color: #111827 !important;
@@ -203,75 +225,80 @@ button {
 /* Alerts */
 .stAlert {
     border-radius: 18px;
-    border: 1px solid rgba(22, 163, 74, 0.15);
+    border: 1px solid rgba(22, 163, 74, 0.12);
 }
 
 .stAlert div {
-    color: #14532d !important;
-    font-weight: 750 !important;
-}
-
-/* Warning */
-div[data-testid="stAlert"] {
-    font-size: 1rem !important;
+    color: #166534 !important;
+    font-weight: 400 !important;
 }
 
 /* Metrics */
 [data-testid="stMetric"] {
     background: #ffffff !important;
-    border: 1px solid #eeeeee;
-    border-radius: 20px;
+    border: 1px solid #eceff3;
+    border-radius: 22px;
     padding: 20px 22px;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.05);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.04);
 }
 
 [data-testid="stMetricLabel"] {
-    font-size: 1rem !important;
-    color: #374151 !important;
-    font-weight: 750 !important;
+    font-size: 0.98rem !important;
+    color: #667085 !important;
+    font-weight: 500 !important;
 }
 
 [data-testid="stMetricValue"] {
-    font-size: 2.7rem !important;
-    font-weight: 850 !important;
-    color: #20212b !important;
+    font-size: 2.6rem !important;
+    font-weight: 600 !important;
+    color: #1f2937 !important;
 }
 
 /* Section headings */
-h2, h3 {
-    color: #20212b !important;
-    font-weight: 850 !important;
-    letter-spacing: -0.03em;
+.section-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #1f2937 !important;
+    margin-top: 8px;
+    margin-bottom: 14px;
 }
 
-/* Normal text */
-p, li, span, div {
-    font-size: 1rem;
-}
-
-/* Selected model text */
+/* Selected model card */
 .selected-model {
     background: #ffffff !important;
-    border: 1px solid #eeeeee;
-    border-radius: 16px;
-    padding: 14px 16px;
+    border: 1px solid #eceff3;
+    border-radius: 18px;
+    padding: 15px 18px;
     margin: 18px 0 16px 0;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.04);
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #20212b !important;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.035);
+    font-size: 1.02rem;
+    color: #1f2937 !important;
+    font-weight: 400 !important;
+}
+
+.selected-model .label {
+    color: #667085 !important;
+    font-weight: 500 !important;
+    margin-right: 8px;
+}
+
+.selected-model .value {
+    color: #1f2937 !important;
+    font-weight: 400 !important;
 }
 
 /* Compatible list cards */
 .model-item {
     background: #ffffff !important;
-    border: 1px solid #eeeeee;
-    border-radius: 14px;
-    padding: 12px 15px;
-    margin-bottom: 8px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.035);
-    color: #20212b !important;
-    font-weight: 650;
+    border: 1px solid #eceff3;
+    border-radius: 16px;
+    padding: 13px 15px;
+    margin-bottom: 9px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.03);
+    color: #1f2937 !important;
+    font-weight: 400 !important;
+    font-size: 1rem !important;
+    line-height: 1.45;
 }
 
 /* Expander */
@@ -279,66 +306,61 @@ details {
     background: #ffffff !important;
     border-radius: 16px !important;
     color: #111827 !important;
+    border: 1px solid #eceff3;
 }
 
 details * {
     color: #111827 !important;
 }
 
-/* Dataframe light fix */
-[data-testid="stDataFrame"] {
-    background: #ffffff !important;
-    color: #111827 !important;
-}
-
 /* Mobile optimization */
 @media screen and (max-width: 768px) {
     .block-container {
-        padding-top: 1.2rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding-top: 1.1rem;
+        padding-left: 0.95rem;
+        padding-right: 0.95rem;
     }
 
     .app-card {
         padding: 22px 20px;
-        border-radius: 20px;
+        border-radius: 22px;
         margin-bottom: 20px;
     }
 
-    .badge {
-        font-size: 0.75rem;
-        padding: 6px 11px;
+    .utility-tag {
+        font-size: 0.74rem;
+        padding: 7px 11px;
     }
 
     .app-title {
-        font-size: 2.35rem;
+        font-size: 2.45rem;
         line-height: 1.12;
     }
 
     .app-subtitle {
-        font-size: 1.08rem;
-        color: #374151 !important;
-        font-weight: 650;
+        font-size: 1.04rem;
+        color: #475467 !important;
+        font-weight: 400;
     }
 
     div[data-testid="stSelectbox"] label,
     div[data-testid="stTextInput"] label {
-        font-size: 1.08rem !important;
-        font-weight: 800 !important;
+        font-size: 1.04rem !important;
+        font-weight: 500 !important;
     }
 
     div[data-baseweb="select"] span,
     div[data-baseweb="input"] input {
-        font-size: 1.02rem !important;
+        font-size: 1rem !important;
         color: #111827 !important;
-        font-weight: 750 !important;
+        font-weight: 400 !important;
         -webkit-text-fill-color: #111827 !important;
     }
 
     div[data-baseweb="input"] input::placeholder {
-        color: #4b5563 !important;
-        font-weight: 700 !important;
-        -webkit-text-fill-color: #4b5563 !important;
+        color: #667085 !important;
+        font-weight: 400 !important;
+        -webkit-text-fill-color: #667085 !important;
     }
 
     [data-testid="stMetric"] {
@@ -346,16 +368,26 @@ details * {
     }
 
     [data-testid="stMetricValue"] {
-        font-size: 2.2rem !important;
+        font-size: 2.15rem !important;
+        font-weight: 600 !important;
     }
 
     [data-testid="stMetricLabel"] {
-        font-size: 0.98rem !important;
+        font-size: 0.96rem !important;
     }
 
     .model-item {
-        font-size: 1rem;
-        font-weight: 700;
+        font-size: 0.98rem !important;
+        font-weight: 400 !important;
+    }
+
+    .selected-model {
+        font-size: 1rem !important;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
     }
 }
 </style>
@@ -364,10 +396,10 @@ details * {
 # ---------- Header ----------
 st.markdown("""
 <div class="app-card">
-    <div class="badge">SIRPHIRE UTILITY</div>
-    <div class="app-title">📱 Tempered Compatible Finder</div>
+    <div class="utility-tag">SIRPHIRE UTILITY</div>
+    <div class="app-title">Tempered <span>Compatibility</span> Dashboard</div>
     <p class="app-subtitle">
-        Search a model and instantly find its tempered glass location and compatible models.
+        Search a model and instantly view its compatible tempered glass location and supported model list.
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -507,7 +539,12 @@ if search_model:
         st.success("Result found")
 
         st.markdown(
-            f'<div class="selected-model">Selected Model: {search_model}</div>',
+            f'''
+            <div class="selected-model">
+                <span class="label">Selected model:</span>
+                <span class="value">{search_model}</span>
+            </div>
+            ''',
             unsafe_allow_html=True
         )
 
@@ -515,7 +552,7 @@ if search_model:
         metric_col1.metric("Location", " & ".join(locations))
         metric_col2.metric("Compatible Count", len(all_compatible))
 
-        st.subheader("✅ Compatible Model List")
+        st.markdown('<div class="section-title">Compatible Model List</div>', unsafe_allow_html=True)
 
         for model in all_compatible:
             st.markdown(
