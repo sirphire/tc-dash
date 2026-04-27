@@ -5,15 +5,25 @@ import re
 st.set_page_config(
     page_title="TC Dash",
     page_icon="📱",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
-# ---------- Modern UI CSS ----------
+# ---------- Force Light Modern UI CSS ----------
 st.markdown("""
 <style>
-.stApp {
-    background: linear-gradient(135deg, #fff7f7 0%, #ffffff 45%, #f7f8fb 100%);
-    color: #171923 !important;
+:root {
+    color-scheme: light !important;
+}
+
+html, body, [data-testid="stAppViewContainer"], .stApp {
+    background: linear-gradient(135deg, #fff7f7 0%, #ffffff 45%, #f7f8fb 100%) !important;
+    color: #111827 !important;
+    color-scheme: light !important;
+}
+
+* {
+    color-scheme: light !important;
 }
 
 .block-container {
@@ -39,12 +49,12 @@ header {
 /* Main readable text */
 html, body, .stApp,
 p, li, span, div, label {
-    color: #171923 !important;
+    color: #111827 !important;
 }
 
 /* Hero card */
 .app-card {
-    background: #ffffff;
+    background: #ffffff !important;
     border: 1px solid #f0dede;
     border-radius: 24px;
     padding: 30px 32px;
@@ -54,7 +64,7 @@ p, li, span, div, label {
 
 .badge {
     display: inline-block;
-    background: #ff3b45;
+    background: #ff3b45 !important;
     color: #ffffff !important;
     padding: 7px 14px;
     border-radius: 999px;
@@ -75,10 +85,10 @@ p, li, span, div, label {
 
 .app-subtitle {
     font-size: 1.2rem;
-    color: #4b5563 !important;
+    color: #374151 !important;
     line-height: 1.6;
     margin-bottom: 0;
-    font-weight: 500;
+    font-weight: 550;
 }
 
 /* Input labels */
@@ -86,14 +96,14 @@ div[data-testid="stSelectbox"] label,
 div[data-testid="stTextInput"] label {
     font-size: 1.05rem !important;
     font-weight: 750 !important;
-    color: #171923 !important;
+    color: #111827 !important;
 }
 
 /* Input/dropdown text */
 div[data-testid="stSelectbox"] div,
 div[data-testid="stTextInput"] div {
     font-size: 1.03rem !important;
-    color: #171923 !important;
+    color: #111827 !important;
 }
 
 /* Input boxes */
@@ -102,25 +112,92 @@ div[data-baseweb="input"] > div {
     border-radius: 16px !important;
     background-color: #ffffff !important;
     border: 1.5px solid #d1d5db !important;
+    color: #111827 !important;
 }
 
 /* Dropdown selected value */
 div[data-baseweb="select"] span {
-    color: #171923 !important;
-    font-weight: 650 !important;
+    color: #111827 !important;
+    font-weight: 700 !important;
+    background-color: transparent !important;
 }
 
 /* Manual input text */
 div[data-baseweb="input"] input {
-    color: #171923 !important;
-    font-weight: 650 !important;
+    color: #111827 !important;
+    background-color: #ffffff !important;
+    font-weight: 700 !important;
+    -webkit-text-fill-color: #111827 !important;
 }
 
 /* Placeholder darker */
 div[data-baseweb="input"] input::placeholder {
-    color: #6b7280 !important;
+    color: #4b5563 !important;
     opacity: 1 !important;
-    font-weight: 550 !important;
+    font-weight: 650 !important;
+    -webkit-text-fill-color: #4b5563 !important;
+}
+
+/* Force dropdown menu readable on all phones */
+div[data-baseweb="popover"] {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+}
+
+div[data-baseweb="popover"] * {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    -webkit-text-fill-color: #111827 !important;
+}
+
+ul[role="listbox"] {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 14px !important;
+}
+
+li[role="option"] {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    font-weight: 700 !important;
+    -webkit-text-fill-color: #111827 !important;
+}
+
+li[role="option"] div,
+li[role="option"] span {
+    background-color: transparent !important;
+    color: #111827 !important;
+    -webkit-text-fill-color: #111827 !important;
+}
+
+li[role="option"]:hover {
+    background-color: #f3f4f6 !important;
+    color: #111827 !important;
+}
+
+li[role="option"]:hover * {
+    background-color: #f3f4f6 !important;
+    color: #111827 !important;
+    -webkit-text-fill-color: #111827 !important;
+}
+
+li[aria-selected="true"],
+li[aria-selected="true"] * {
+    background-color: #fee2e2 !important;
+    color: #111827 !important;
+    -webkit-text-fill-color: #111827 !important;
+    font-weight: 800 !important;
+}
+
+/* Prevent browser dark-mode color inversion */
+input,
+textarea,
+select,
+button {
+    color-scheme: light !important;
+    background-color: #ffffff !important;
+    color: #111827 !important;
 }
 
 /* Alerts */
@@ -141,7 +218,7 @@ div[data-testid="stAlert"] {
 
 /* Metrics */
 [data-testid="stMetric"] {
-    background: #ffffff;
+    background: #ffffff !important;
     border: 1px solid #eeeeee;
     border-radius: 20px;
     padding: 20px 22px;
@@ -150,7 +227,7 @@ div[data-testid="stAlert"] {
 
 [data-testid="stMetricLabel"] {
     font-size: 1rem !important;
-    color: #4b5563 !important;
+    color: #374151 !important;
     font-weight: 750 !important;
 }
 
@@ -174,7 +251,7 @@ p, li, span, div {
 
 /* Selected model text */
 .selected-model {
-    background: #ffffff;
+    background: #ffffff !important;
     border: 1px solid #eeeeee;
     border-radius: 16px;
     padding: 14px 16px;
@@ -187,20 +264,31 @@ p, li, span, div {
 
 /* Compatible list cards */
 .model-item {
-    background: #ffffff;
+    background: #ffffff !important;
     border: 1px solid #eeeeee;
     border-radius: 14px;
     padding: 12px 15px;
     margin-bottom: 8px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.035);
     color: #20212b !important;
-    font-weight: 600;
+    font-weight: 650;
 }
 
 /* Expander */
 details {
     background: #ffffff !important;
     border-radius: 16px !important;
+    color: #111827 !important;
+}
+
+details * {
+    color: #111827 !important;
+}
+
+/* Dataframe light fix */
+[data-testid="stDataFrame"] {
+    background: #ffffff !important;
+    color: #111827 !important;
 }
 
 /* Mobile optimization */
@@ -230,7 +318,7 @@ details {
     .app-subtitle {
         font-size: 1.08rem;
         color: #374151 !important;
-        font-weight: 550;
+        font-weight: 650;
     }
 
     div[data-testid="stSelectbox"] label,
@@ -243,12 +331,14 @@ details {
     div[data-baseweb="input"] input {
         font-size: 1.02rem !important;
         color: #111827 !important;
-        font-weight: 700 !important;
+        font-weight: 750 !important;
+        -webkit-text-fill-color: #111827 !important;
     }
 
     div[data-baseweb="input"] input::placeholder {
         color: #4b5563 !important;
-        font-weight: 650 !important;
+        font-weight: 700 !important;
+        -webkit-text-fill-color: #4b5563 !important;
     }
 
     [data-testid="stMetric"] {
@@ -265,7 +355,7 @@ details {
 
     .model-item {
         font-size: 1rem;
-        font-weight: 650;
+        font-weight: 700;
     }
 }
 </style>
