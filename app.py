@@ -13,6 +13,7 @@ st.markdown("""
 <style>
 .stApp {
     background: linear-gradient(135deg, #fff7f7 0%, #ffffff 45%, #f7f8fb 100%);
+    color: #171923 !important;
 }
 
 .block-container {
@@ -35,6 +36,12 @@ header {
     display: none !important;
 }
 
+/* Main readable text */
+html, body, .stApp,
+p, li, span, div, label {
+    color: #171923 !important;
+}
+
 /* Hero card */
 .app-card {
     background: #ffffff;
@@ -48,7 +55,7 @@ header {
 .badge {
     display: inline-block;
     background: #ff3b45;
-    color: #ffffff;
+    color: #ffffff !important;
     padding: 7px 14px;
     border-radius: 999px;
     font-size: 0.85rem;
@@ -60,7 +67,7 @@ header {
 .app-title {
     font-size: 3rem;
     font-weight: 850;
-    color: #20212b;
+    color: #20212b !important;
     margin-bottom: 8px;
     letter-spacing: -0.04em;
     line-height: 1.1;
@@ -68,23 +75,25 @@ header {
 
 .app-subtitle {
     font-size: 1.2rem;
-    color: #6f7280;
+    color: #4b5563 !important;
     line-height: 1.6;
     margin-bottom: 0;
+    font-weight: 500;
 }
 
 /* Input labels */
 div[data-testid="stSelectbox"] label,
 div[data-testid="stTextInput"] label {
     font-size: 1.05rem !important;
-    font-weight: 700 !important;
-    color: #20212b !important;
+    font-weight: 750 !important;
+    color: #171923 !important;
 }
 
-/* Input text */
+/* Input/dropdown text */
 div[data-testid="stSelectbox"] div,
 div[data-testid="stTextInput"] div {
     font-size: 1.03rem !important;
+    color: #171923 !important;
 }
 
 /* Input boxes */
@@ -92,12 +101,42 @@ div[data-baseweb="select"] > div,
 div[data-baseweb="input"] > div {
     border-radius: 16px !important;
     background-color: #ffffff !important;
-    border: 1px solid #ececf1 !important;
+    border: 1.5px solid #d1d5db !important;
 }
 
-/* Result alert */
+/* Dropdown selected value */
+div[data-baseweb="select"] span {
+    color: #171923 !important;
+    font-weight: 650 !important;
+}
+
+/* Manual input text */
+div[data-baseweb="input"] input {
+    color: #171923 !important;
+    font-weight: 650 !important;
+}
+
+/* Placeholder darker */
+div[data-baseweb="input"] input::placeholder {
+    color: #6b7280 !important;
+    opacity: 1 !important;
+    font-weight: 550 !important;
+}
+
+/* Alerts */
 .stAlert {
     border-radius: 18px;
+    border: 1px solid rgba(22, 163, 74, 0.15);
+}
+
+.stAlert div {
+    color: #14532d !important;
+    font-weight: 750 !important;
+}
+
+/* Warning */
+div[data-testid="stAlert"] {
+    font-size: 1rem !important;
 }
 
 /* Metrics */
@@ -111,8 +150,8 @@ div[data-baseweb="input"] > div {
 
 [data-testid="stMetricLabel"] {
     font-size: 1rem !important;
-    color: #6f7280 !important;
-    font-weight: 700 !important;
+    color: #4b5563 !important;
+    font-weight: 750 !important;
 }
 
 [data-testid="stMetricValue"] {
@@ -133,6 +172,19 @@ p, li, span, div {
     font-size: 1rem;
 }
 
+/* Selected model text */
+.selected-model {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin: 18px 0 16px 0;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.04);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #20212b !important;
+}
+
 /* Compatible list cards */
 .model-item {
     background: #ffffff;
@@ -141,8 +193,14 @@ p, li, span, div {
     padding: 12px 15px;
     margin-bottom: 8px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.035);
-    color: #20212b;
-    font-weight: 520;
+    color: #20212b !important;
+    font-weight: 600;
+}
+
+/* Expander */
+details {
+    background: #ffffff !important;
+    border-radius: 16px !important;
 }
 
 /* Mobile optimization */
@@ -156,18 +214,58 @@ p, li, span, div {
     .app-card {
         padding: 22px 20px;
         border-radius: 20px;
+        margin-bottom: 20px;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 6px 11px;
     }
 
     .app-title {
-        font-size: 2.15rem;
+        font-size: 2.35rem;
+        line-height: 1.12;
     }
 
     .app-subtitle {
-        font-size: 1.05rem;
+        font-size: 1.08rem;
+        color: #374151 !important;
+        font-weight: 550;
+    }
+
+    div[data-testid="stSelectbox"] label,
+    div[data-testid="stTextInput"] label {
+        font-size: 1.08rem !important;
+        font-weight: 800 !important;
+    }
+
+    div[data-baseweb="select"] span,
+    div[data-baseweb="input"] input {
+        font-size: 1.02rem !important;
+        color: #111827 !important;
+        font-weight: 700 !important;
+    }
+
+    div[data-baseweb="input"] input::placeholder {
+        color: #4b5563 !important;
+        font-weight: 650 !important;
+    }
+
+    [data-testid="stMetric"] {
+        padding: 16px 18px;
     }
 
     [data-testid="stMetricValue"] {
-        font-size: 2.1rem !important;
+        font-size: 2.2rem !important;
+    }
+
+    [data-testid="stMetricLabel"] {
+        font-size: 0.98rem !important;
+    }
+
+    .model-item {
+        font-size: 1rem;
+        font-weight: 650;
     }
 }
 </style>
@@ -318,7 +416,10 @@ if search_model:
 
         st.success("Result found")
 
-        st.markdown(f"**Selected Model:** {search_model}")
+        st.markdown(
+            f'<div class="selected-model">Selected Model: {search_model}</div>',
+            unsafe_allow_html=True
+        )
 
         metric_col1, metric_col2 = st.columns(2)
         metric_col1.metric("Location", " & ".join(locations))
