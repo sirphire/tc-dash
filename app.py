@@ -8,30 +8,186 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom CSS for smaller font
+# ---------- Modern UI CSS ----------
 st.markdown("""
 <style>
-h1 {
-    font-size: 2.3rem !important;
+.stApp {
+    background: linear-gradient(135deg, #fff7f7 0%, #ffffff 45%, #f7f8fb 100%);
 }
-p, label, div, span {
-    font-size: 0.95rem !important;
+
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1100px;
 }
-[data-testid="stMetricValue"] {
-    font-size: 2.1rem !important;
+
+/* Hide Streamlit default menu/footer/header as much as possible */
+#MainMenu {
+    visibility: hidden;
 }
+footer {
+    visibility: hidden;
+}
+header {
+    visibility: hidden;
+}
+.stToolbar {
+    display: none !important;
+}
+
+/* Hero card */
+.app-card {
+    background: #ffffff;
+    border: 1px solid #f0dede;
+    border-radius: 24px;
+    padding: 30px 32px;
+    box-shadow: 0 18px 45px rgba(25, 25, 25, 0.08);
+    margin-bottom: 24px;
+}
+
+.badge {
+    display: inline-block;
+    background: #ff3b45;
+    color: #ffffff;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+    letter-spacing: 0.03em;
+}
+
+.app-title {
+    font-size: 3rem;
+    font-weight: 850;
+    color: #20212b;
+    margin-bottom: 8px;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+}
+
+.app-subtitle {
+    font-size: 1.2rem;
+    color: #6f7280;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* Input labels */
+div[data-testid="stSelectbox"] label,
+div[data-testid="stTextInput"] label {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    color: #20212b !important;
+}
+
+/* Input text */
+div[data-testid="stSelectbox"] div,
+div[data-testid="stTextInput"] div {
+    font-size: 1.03rem !important;
+}
+
+/* Input boxes */
+div[data-baseweb="select"] > div,
+div[data-baseweb="input"] > div {
+    border-radius: 16px !important;
+    background-color: #ffffff !important;
+    border: 1px solid #ececf1 !important;
+}
+
+/* Result alert */
+.stAlert {
+    border-radius: 18px;
+}
+
+/* Metrics */
+[data-testid="stMetric"] {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 20px;
+    padding: 20px 22px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.05);
+}
+
 [data-testid="stMetricLabel"] {
     font-size: 1rem !important;
+    color: #6f7280 !important;
+    font-weight: 700 !important;
+}
+
+[data-testid="stMetricValue"] {
+    font-size: 2.7rem !important;
+    font-weight: 850 !important;
+    color: #20212b !important;
+}
+
+/* Section headings */
+h2, h3 {
+    color: #20212b !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.03em;
+}
+
+/* Normal text */
+p, li, span, div {
+    font-size: 1rem;
+}
+
+/* Compatible list cards */
+.model-item {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 14px;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.035);
+    color: #20212b;
+    font-weight: 520;
+}
+
+/* Mobile optimization */
+@media screen and (max-width: 768px) {
+    .block-container {
+        padding-top: 1.2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .app-card {
+        padding: 22px 20px;
+        border-radius: 20px;
+    }
+
+    .app-title {
+        font-size: 2.15rem;
+    }
+
+    .app-subtitle {
+        font-size: 1.05rem;
+    }
+
+    [data-testid="stMetricValue"] {
+        font-size: 2.1rem !important;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("📱 Tempered Compatible Finder")
-st.caption("Search a model and find the compatible tempered glass location.")
+# ---------- Header ----------
+st.markdown("""
+<div class="app-card">
+    <div class="badge">SIRPHIRE UTILITY</div>
+    <div class="app-title">📱 Tempered Compatible Finder</div>
+    <p class="app-subtitle">
+        Search a model and instantly find its tempered glass location and compatible models.
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
 SHEET_URL = st.secrets.get("SHEET_URL", "")
 
 
+# ---------- Google Sheet Helpers ----------
 def get_sheet_id(url):
     match = re.search(r"/d/([a-zA-Z0-9-_]+)", url)
     if match:
@@ -50,7 +206,6 @@ def excel_export_url(sheet_url):
 def load_data(sheet_url):
     url = excel_export_url(sheet_url)
 
-    # Read Google Sheet as Excel
     compatible_raw = pd.read_excel(
         url,
         sheet_name="compatible modal",
@@ -71,8 +226,8 @@ def load_data(sheet_url):
     models_raw = models_raw.fillna("")
 
     # compatible modal sheet:
-    # B column = location
-    # C column = compatible model list
+    # Column B = location
+    # Column C = compatible model list
     compatible_df = compatible_raw.iloc[:, [1, 2]].copy()
     compatible_df.columns = ["location", "compatible"]
 
@@ -95,7 +250,7 @@ def load_data(sheet_url):
     compatible_df = compatible_df.drop_duplicates().reset_index(drop=True)
 
     # All Modals sheet:
-    # C column = model names
+    # Column C = model names
     models_df = models_raw.iloc[:, [2]].copy()
     models_df.columns = ["model"]
 
@@ -111,6 +266,7 @@ def load_data(sheet_url):
     return compatible_df, model_list
 
 
+# ---------- Load Data ----------
 if not SHEET_URL:
     st.error("SHEET_URL is missing. Please add your Google Sheet link in Streamlit secrets.")
     st.stop()
@@ -123,6 +279,7 @@ except Exception as e:
     st.stop()
 
 
+# ---------- Search UI ----------
 col1, col2 = st.columns([2, 1])
 
 with col1:
@@ -140,6 +297,8 @@ with col2:
 
 search_model = manual_search.strip() if manual_search.strip() else selected_model.strip()
 
+
+# ---------- Results ----------
 if search_model:
     result = df[
         df["compatible"].astype(str).str.contains(search_model, case=False, na=False, regex=False)
@@ -159,16 +318,19 @@ if search_model:
 
         st.success("Result found")
 
-        # Smaller and cleaner summary
         st.markdown(f"**Selected Model:** {search_model}")
 
-        kpi1, kpi2 = st.columns(2)
-        kpi1.metric("Location", " & ".join(locations))
-        kpi2.metric("Compatible Count", len(all_compatible))
+        metric_col1, metric_col2 = st.columns(2)
+        metric_col1.metric("Location", " & ".join(locations))
+        metric_col2.metric("Compatible Count", len(all_compatible))
 
         st.subheader("✅ Compatible Model List")
+
         for model in all_compatible:
-            st.write(f"- {model}")
+            st.markdown(
+                f'<div class="model-item">{model}</div>',
+                unsafe_allow_html=True
+            )
 
         with st.expander("Matched Rows"):
             st.dataframe(result, use_container_width=True)
